@@ -1,0 +1,12 @@
+[submodule "zeromqt"]
+	path = src/zeromqt
+	url = git://github.com/bug-buster/zeromqt.git
+[submodule "qtnetstring"]
+	path = src/qtnetstring
+	url = git://github.com/nmandery/qtnetstring.git
+[submodule "src/zeromqt"]
+	path = src/zeromqt
+	url = git://github.com/bug-buster/zeromqt.git
+[submodule "src/qtnetstring"]
+	path = src/qtnetstring
+	url = git://github.com/nmandery/qtnetstring.git
