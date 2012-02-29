@@ -17,7 +17,7 @@ TEMPLATE = app
 
 
 SOURCES += src/main.cpp \
-    src/qtnetstring/qtnetstring.cpp \
+    src/qtnetstring/QTNetString.cpp \
     src/zeromqt/ZmqSocket.cc \
     src/zeromqt/ZmqContext.cc \
     src/Mongrel2.cpp \
@@ -25,7 +25,8 @@ SOURCES += src/main.cpp \
     src/Response.cpp
 
 HEADERS += \
-    src/qtnetstring/qtnetstring.h \
+    src/main.h \
+    src/qtnetstring/QTNetString.h \
     src/zeromqt/ZmqMessage.h \
     src/zeromqt/ZmqException.h \
     src/zeromqt/ZmqContext.h \

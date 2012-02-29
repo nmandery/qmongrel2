@@ -2,7 +2,7 @@
 #include "QDebug"
 #include "QList"
 #include "QVariant"
-#include "qtnetstring/qtnetstring.h"
+#include "qtnetstring/QTNetString.h"
 
 using namespace QMongrel2;
 
@@ -71,4 +71,39 @@ Request::Request(const QByteArray &msgdata)
     }
     req_data->body = body_variant.toByteArray();
     req_data->is_ok = true;
+}
+
+
+Request::Method
+Request::getMethod()
+{
+    Request::Method method = OTHER;
+
+    if (req_data) {
+        QByteArray mtd = getHeaderCaseSensitive("METHOD");
+
+        if (mtd == "POST") {
+            method = POST;
+        }
+        else if (mtd == "GET") {
+            method = GET;
+        }
+        else if (mtd == "OPTIONS") {
+            method = OPTIONS;
+        }
+        else if (mtd == "HEAD") {
+            method = HEAD;
+        }
+        else if (mtd == "DELETE") {
+            method = DELETE;
+        }
+        else if (mtd == "TRACE") {
+            method = TRACE;
+        }
+        else if (mtd == "CONNECT") {
+            method = CONNECT;
+        }
+    }
+
+    return method;
 }

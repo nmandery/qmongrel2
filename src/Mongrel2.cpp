@@ -11,12 +11,12 @@ Mongrel2::Mongrel2(const QByteArray identity_, const QByteArray socket_in_addr_,
         QObject(parent),
         identity(identity_),
         socket_in_addr(socket_in_addr_), socket_out_addr(socket_out_addr_),
-        socket_in(ZMQ_PULL), socket_out(ZMQ_SUB)
+        socket_in(ZMQ_PULL), socket_out(ZMQ_PUB)
 {
     socket_in.connectTo(socket_in_addr);
-    socket_out.connectTo(socket_out_addr);
 
     socket_out.setOpt(ZMQ_IDENTITY, identity);
+    socket_out.connectTo(socket_out_addr);
 
 
     connect(&socket_in, SIGNAL(readyRead()), this, SLOT(handleInMsg()));
@@ -27,11 +27,25 @@ Mongrel2::Mongrel2(const QByteArray identity_, const QByteArray socket_in_addr_,
 void
 Mongrel2::handleInMsg()
 {
-    qDebug() << "Inmsg";
     QList<QByteArray> r = socket_in.recv();
     for(QList<QByteArray>::const_iterator i=r.constBegin(); i!=r.constEnd(); ++i) {
         QMongrel2::Request req(*i);
-        QMongrel2::Response resp = req.getResponse();
-        qDebug() << "Responding " << resp.toByteArray(identity);
+        emit received(req);
     }
+}
+
+
+void
+Mongrel2::send(Response resp)
+{
+    QByteArray data = resp.toByteArray(identity, Response::PLAIN);
+    socket_out.send(data);
+}
+
+
+void
+Mongrel2::sendHttp(Response resp)
+{
+    QByteArray data = resp.toByteArray(identity, Response::HTTP);
+    socket_out.send(data);
 }

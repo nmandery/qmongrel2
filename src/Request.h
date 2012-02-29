@@ -42,7 +42,26 @@ class Request {
     protected:
         bool is_ok;
 
+        const QByteArray getHeaderCaseSensitive(const QString & header_name)
+        {
+            return req_data->headers.value(header_name);
+        }
+
+
     public:
+
+        enum Method {
+            OPTIONS,
+            GET,
+            POST,
+            PUT,
+            HEAD,
+            DELETE,
+            TRACE,
+            CONNECT,
+            OTHER
+        };
+
         Request(const QByteArray &msgdata);
         Request(const Request &other)
             : req_data(other.req_data)
@@ -56,6 +75,45 @@ class Request {
             }
             return Response(conn_id);
         };
+
+        const QMap<QString, QByteArray> & getHeaders()
+        {
+            return req_data->headers;
+        }
+
+        Method getMethod();
+
+
+        const QByteArray getHeader(const QString & header_name)
+        {
+            // mongrel2 returns http headers always in lowercase
+            return req_data->headers.value(header_name.toLower());
+        }
+
+
+        const QByteArray getPattern()
+        {
+            return getHeaderCaseSensitive("PATTERN");
+        }
+
+
+        const QByteArray getPath()
+        {
+            return getHeaderCaseSensitive("PATH");
+        }
+
+
+        const QByteArray getVersion()
+        {
+            return getHeaderCaseSensitive("VERSION");
+        }
+
+
+        const QByteArray getUri()
+        {
+            return getHeaderCaseSensitive("URI");
+        }
+
 };
 
 }

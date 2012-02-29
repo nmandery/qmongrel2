@@ -5,6 +5,7 @@
 #include "QByteArray"
 #include "zeromqt/ZmqSocket.h"
 #include "Request.h"
+#include "Response.h"
 
 namespace QMongrel2 {
 
@@ -26,9 +27,12 @@ class Mongrel2 : public QObject {
     protected slots:
         void handleInMsg();
 
+    public slots:
+        void send(QMongrel2::Response resp);
+        void sendHttp(QMongrel2::Response resp);
 
- //   public signals:
-//        void recieved(Request request);
+    signals:
+        void received(QMongrel2::Request request);
 
     public:
         Mongrel2(const QByteArray identity_, const QByteArray socket_in_addr_, const QByteArray socket_out_addr_, QObject * parent = 0);
