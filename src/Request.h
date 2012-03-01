@@ -59,7 +59,8 @@ class Request {
             DELETE,
             TRACE,
             CONNECT,
-            OTHER
+            OTHER,
+            JSON
         };
 
         Request(const QByteArray &msgdata);
@@ -113,6 +114,14 @@ class Request {
         {
             return getHeaderCaseSensitive("URI");
         }
+
+
+        const QByteArray & getBodyRef()
+        {
+            return req_data->body;
+        }
+
+        bool isDisconnect();
 
 };
 

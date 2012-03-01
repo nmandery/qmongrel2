@@ -7,10 +7,12 @@
 using namespace QMongrel2;
 
 
-Mongrel2::Mongrel2(const QByteArray identity_, const QByteArray socket_in_addr_, const QByteArray socket_out_addr_, QObject *parent):
-        QObject(parent),
+Mongrel2::Mongrel2(const QByteArray identity_, const QByteArray socket_in_addr_,
+                const QByteArray socket_out_addr_, QObject *parent)
+    :   QObject(parent),
         identity(identity_),
-        socket_in_addr(socket_in_addr_), socket_out_addr(socket_out_addr_),
+        socket_in_addr(socket_in_addr_),
+        socket_out_addr(socket_out_addr_),
         socket_in(ZMQ_PULL), socket_out(ZMQ_PUB)
 {
     socket_in.connectTo(socket_in_addr);
@@ -18,9 +20,7 @@ Mongrel2::Mongrel2(const QByteArray identity_, const QByteArray socket_in_addr_,
     socket_out.setOpt(ZMQ_IDENTITY, identity);
     socket_out.connectTo(socket_out_addr);
 
-
     connect(&socket_in, SIGNAL(readyRead()), this, SLOT(handleInMsg()));
-
 }
 
 
@@ -30,7 +30,18 @@ Mongrel2::handleInMsg()
     QList<QByteArray> r = socket_in.recv();
     for(QList<QByteArray>::const_iterator i=r.constBegin(); i!=r.constEnd(); ++i) {
         QMongrel2::Request req(*i);
-        emit received(req);
+
+        if (req.getMethod() != QMongrel2::Request::JSON) {
+            emit received(req);
+        }
+        else {
+            if (req.isDisconnect()) {
+                emit disconnect(req);
+            }
+            else {
+                qWarning() << "Unsupported JSON request: " << req.getBodyRef();
+            }
+        }
     }
 }
 

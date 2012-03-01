@@ -88,6 +88,9 @@ Request::getMethod()
         else if (mtd == "GET") {
             method = GET;
         }
+        else if (mtd == "JSON") {
+            method = JSON;
+        }
         else if (mtd == "OPTIONS") {
             method = OPTIONS;
         }
@@ -103,7 +106,23 @@ Request::getMethod()
         else if (mtd == "CONNECT") {
             method = CONNECT;
         }
+        else {
+            qWarning() << "Unsupported request method: " << mtd; 
+        }
     }
 
     return method;
+}
+
+
+/**
+ * TODO: use real json parser
+ * for now mongrel2 implements only this response - also hardcoded.
+ *
+ * possible parser: jsonqt
+ */
+bool
+Request::isDisconnect()
+{
+    return req_data->body == "{\"type\":\"disconnect\"}";
 }

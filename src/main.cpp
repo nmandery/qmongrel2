@@ -1,11 +1,7 @@
-
 #include "main.h"
 #include <QtCore/QCoreApplication>
 
-#include <QVariant>
 #include <QByteArray>
-#include <QMap>
-#include <QList>
 #include <QDebug>
 #include <QFile>
 
@@ -13,7 +9,7 @@
 void
 Webapp::receive(QMongrel2::Request req)
 {
-//    qDebug() << req.getHeaders();
+    qDebug() << req.getHeaders();
 //    qDebug() << "user agent: " << req.getHeader("User-Agent");
 
     QMongrel2::Response resp = req.getResponse();
