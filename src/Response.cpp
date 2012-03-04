@@ -61,7 +61,7 @@ _initHttpStati()
 
 Response::Response(int conn_id)
 {
-    resp_data = new ResponseData;
+    resp_data = QSharedPointer<ResponseData>(new ResponseData);
 
     resp_data->conn_ids.append(conn_id);
 }

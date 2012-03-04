@@ -36,7 +36,8 @@ class Mongrel2 : public QObject {
         void disconnect(QMongrel2::Request request);
 
     public:
-        Mongrel2(const QByteArray identity_, const QByteArray socket_in_addr_, const QByteArray socket_out_addr_, QObject * parent = 0);
+        Mongrel2(const QByteArray identity_, const QByteArray socket_in_addr_,
+                const QByteArray socket_out_addr_, QObject * parent = 0);
 
 };
 

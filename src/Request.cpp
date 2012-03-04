@@ -1,7 +1,8 @@
 #include "Request.h"
-#include "QDebug"
-#include "QList"
-#include "QVariant"
+#include <QDebug>
+#include <QList>
+#include <QVariant>
+#include <QRegExp>
 #include "qtnetstring/QTNetString.h"
 
 using namespace QMongrel2;
@@ -11,7 +12,7 @@ Request::Request(const QByteArray &msgdata)
         : is_ok(false)
 {
 
-    req_data = new RequestData();
+    req_data = QSharedPointer<RequestData>(new RequestData());
     req_data->is_ok = false;
 
     int end_sender_ident = msgdata.indexOf(' ');
@@ -80,7 +81,7 @@ Request::getMethod()
     Request::Method method = OTHER;
 
     if (req_data) {
-        QByteArray mtd = getHeaderCaseSensitive("METHOD");
+        QString mtd = getHeaderCaseSensitive("METHOD");
 
         if (mtd == "POST") {
             method = POST;
@@ -107,7 +108,7 @@ Request::getMethod()
             method = CONNECT;
         }
         else {
-            qWarning() << "Unsupported request method: " << mtd; 
+            qWarning() << "Unsupported request method: " << mtd;
         }
     }
 
@@ -115,14 +116,14 @@ Request::getMethod()
 }
 
 
-/**
- * TODO: use real json parser
- * for now mongrel2 implements only this response - also hardcoded.
- *
- * possible parser: jsonqt
- */
 bool
 Request::isDisconnect()
 {
+    /*
+      TODO: use real json parser
+      for now mongrel2 implements only this response - also hardcoded.
+
+      possible parser: jsonqt
+     */
     return req_data->body == "{\"type\":\"disconnect\"}";
 }

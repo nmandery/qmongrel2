@@ -2,7 +2,7 @@
 #define __qmongrel2_request_h__
 
 #include "QObject"
-#include "QSharedData"
+#include "QSharedPointer"
 #include "QByteArray"
 #include "QMap"
 #include "QString"
@@ -11,7 +11,8 @@
 namespace QMongrel2 {
 
 
-class RequestData : public QSharedData {
+class RequestData
+{
 
      public:
         int conn_id;
@@ -21,35 +22,43 @@ class RequestData : public QSharedData {
         bool is_ok;
 
         RequestData()
-            :   conn_id(0), sender_ident(),
-                headers(), body(), is_ok(false)
+            :   conn_id(0),
+                sender_ident(),
+                headers(),
+                body(),
+                is_ok(false)
             {};
 
         RequestData(const RequestData &other)
-            :   QSharedData(other), conn_id(other.conn_id),
+            :   conn_id(other.conn_id),
                 sender_ident(other.sender_ident),
                 headers(other.headers),
-                body(other.body), is_ok(other.is_ok)
+                body(other.body),
+                is_ok(other.is_ok)
             {};
 
 };
 
-class Request {
+class Request
+{
 
     private:
-        QSharedDataPointer<RequestData>req_data;
+        QSharedPointer<RequestData>req_data;
 
     protected:
         bool is_ok;
 
-        const QByteArray getHeaderCaseSensitive(const QString & header_name)
+        const QString getHeaderCaseSensitive(const QString & header_name)
         {
-            return req_data->headers.value(header_name);
+            return QString(req_data->headers.value(header_name));
         }
 
 
     public:
 
+        /**
+         * HTTP Method
+         */
         enum Method {
             OPTIONS,
             GET,
@@ -85,38 +94,37 @@ class Request {
         Method getMethod();
 
 
-        const QByteArray getHeader(const QString & header_name)
+        const QString getHeader(const QString & header_name)
         {
             // mongrel2 returns http headers always in lowercase
             return req_data->headers.value(header_name.toLower());
         }
 
 
-        const QByteArray getPattern()
+        const inline QString getPattern()
         {
             return getHeaderCaseSensitive("PATTERN");
         }
 
 
-        const QByteArray getPath()
+        const inline QString getPath()
         {
             return getHeaderCaseSensitive("PATH");
         }
 
-
-        const QByteArray getVersion()
+        const inline QString getHttpVersion()
         {
             return getHeaderCaseSensitive("VERSION");
         }
 
 
-        const QByteArray getUri()
+        const inline QString getUri()
         {
             return getHeaderCaseSensitive("URI");
         }
 
 
-        const QByteArray & getBodyRef()
+        const inline QByteArray & getBodyRef()
         {
             return req_data->body;
         }

@@ -9,7 +9,7 @@ QT       += core
 QT       -= gui
 QT       -= webkit
 
-TARGET = qtmongrel2
+TARGET = qmongrel2
 CONFIG   += console
 CONFIG   -= app_bundle
 

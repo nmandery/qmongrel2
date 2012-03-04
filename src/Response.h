@@ -5,12 +5,12 @@
 #include "QByteArray"
 #include "QList"
 #include "QMap"
-#include <QSharedData>
+#include <QSharedPointer>
 
 namespace QMongrel2 {
 
 
-class ResponseData : public QSharedData
+class ResponseData
 {
 
     public:
@@ -28,8 +28,7 @@ class ResponseData : public QSharedData
             {};
 
         ResponseData(const ResponseData &other)
-            :   QSharedData(other),
-                conn_ids(other.conn_ids),
+            :   conn_ids(other.conn_ids),
                 body(other.body),
                 headers(other.headers),
                 http_code(other.http_code)
@@ -41,7 +40,7 @@ class Response
 {
 
     private:
-        QSharedDataPointer<ResponseData> resp_data;
+        QSharedPointer<ResponseData> resp_data;
 
     protected:
         QByteArray getHttpResponse();

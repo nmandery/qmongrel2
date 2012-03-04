@@ -10,6 +10,7 @@ void
 Webapp::receive(QMongrel2::Request req)
 {
     qDebug() << req.getHeaders();
+    qDebug() << req.getPath();
 //    qDebug() << "user agent: " << req.getHeader("User-Agent");
 
     QMongrel2::Response resp = req.getResponse();
