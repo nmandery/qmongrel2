@@ -1,22 +1,17 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2012-02-27T19:14:13
-#
-#-------------------------------------------------
-
 QT       += core
 
 QT       -= gui
 QT       -= webkit
 
-TARGET = qmongrel2
+TARGET = qmongrel2_example
 CONFIG   += console
 CONFIG   -= app_bundle
 
 TEMPLATE = app
 
 
-SOURCES += src/main.cpp \
+SOURCES += \
+    example.cpp \
     src/qtnetstring/QTNetString.cpp \
     src/zeromqt/ZmqSocket.cc \
     src/zeromqt/ZmqContext.cc \
@@ -25,7 +20,7 @@ SOURCES += src/main.cpp \
     src/Response.cpp
 
 HEADERS += \
-    src/main.h \
+    example.h \
     src/qtnetstring/QTNetString.h \
     src/zeromqt/ZmqMessage.h \
     src/zeromqt/ZmqException.h \

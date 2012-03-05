@@ -3,8 +3,8 @@
 
 
 #include <QObject>
-#include "Mongrel2.h"
-#include "Response.h"
+#include "src/Mongrel2.h"
+#include "src/Response.h"
 
 class Webapp : public QObject
 {
